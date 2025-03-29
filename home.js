@@ -57,7 +57,7 @@ const apis = [
     {
         name: "Mediastack",
         enabled: true,
-        url: "http://api.mediastack.com/v1/news?access_key=0f3735fea05b4dae23577fc783a50a09&countries=us&languages=en",
+        url: "http://api.mediastack.com/v1/news?access_key=0f3735fea05b4dae23577fc783a50a09&countries=ke&languages=en",
         extractData: (data) => data.data?.map(article => ({
             title: article.title,
             image: article.image || "default-news.jpeg",
