@@ -12,7 +12,7 @@ const apis = [
     },
     {
         name: "CurrentsAPI",
-        enabled: true,
+        enabled: false,
         url: "https://api.currentsapi.services/v1/latest-news?apiKey=5CT4KdeK7VM9J53CgjlSnHXvEeJTyvfVUVdnc2TP-xu3ikDj",
         extractData: (data) => data.news?.map(article => ({
             title: article.title,
