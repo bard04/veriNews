@@ -53,7 +53,19 @@ const apis = [
             description: article.text || "No description available.",
             link: article.url || "#"
         })) || []
+    },
+    {
+        name: "Mediastack",
+        enabled: true,
+        url: "http://api.mediastack.com/v1/news?access_key=0f3735fea05b4dae23577fc783a50a09&countries=us&languages=en",
+        extractData: (data) => data.data?.map(article => ({
+            title: article.title,
+            image: article.image || "default-news.jpeg",
+            description: article.description || "No description available.",
+            link: article.url || "#"
+        })) || []
     }
+    
 ];
 
 const newsContainer = document.querySelector(".item3N");
