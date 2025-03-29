@@ -265,4 +265,9 @@ h1 {
   .floating-button, .debug-button, .overlay-menu {
     display: none !important;
   }
-  
+  @media (max-width: 768px) {
+    .floating-button {
+        display: none !important;
+    }
+}
+
