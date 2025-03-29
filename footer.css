@@ -69,17 +69,16 @@ body {
     color: white;
     text-align: center;
     text-decoration: none;
-    padding: 8px 16px;
+    padding: 10px 20px;  /* Increased padding for larger touch targets */
+    min-width: 88px;     /* A minimum width for easier tapping */
+    min-height: 44px;    /* Ensures a comfortable touch target height */
+    border-radius: 4px;  /* Optional: soften the edges */
 }
 
+.item2 li a.active,
 .item2 li a:active {
-    background-color: gold;
-    color: white;
-}
-
-.item2 li a:not(:active) {
-    background-color: #1f1f3b;
-    color: white;
+  background-color: gold;
+  color: white;
 }
 
 /* Privacy policy content */
@@ -117,33 +116,38 @@ body {
     flex: 1;
     text-align: center;
     min-width: 200px;
+    margin: 10px 0;
 }
 
 .footer-column h4 {
-    font-size: 16px;
-    color: #ffffff;
+    font-size: 1.25em;
+    color: #fff;
     margin-bottom: 10px;
     text-transform: uppercase;
     font-weight: bold;
     border-bottom: 2px solid #fff;
     display: inline-block;
     padding-bottom: 5px;
-}
+  }
 
-.footer-column ul {
+  .footer-column ul {
     list-style: none;
     padding: 0;
-    text-decoration: none;
-}
-
-.footer-column li a {
+  }
+  
+  .footer-column li a {
+    display: inline-block;
     text-decoration: none;
     color: white;
-}
-
-.footer-column li a:hover {
+    padding: 10px;  /* Increased padding for larger touch targets */
+    min-width: 80px;
+    border-radius: 4px;
+  }
+  
+  .footer-column li a:hover {
     color: gold;
-}
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 
 .footer-bottom {
     text-align: center;
@@ -156,7 +160,7 @@ body {
 .footer-bottom >contact-email {
     background-color: #171734;
     text-align: center;
-    padding: 15px;
+    padding: 20px;
     color: white;
 
 }
@@ -185,14 +189,14 @@ body {
 .subscribe-box input {
     width: 100%;
     padding: 10px;
-    margin: 10px 0;
+    margin: 15px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
 }
 .subscribe-box button {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     background-color: #007BFF;
     color: white;
     border: none;
@@ -216,7 +220,7 @@ body {
     }
     
     .item2 li a {
-      padding: 8px;
+      padding: 12px 16px;
       font-size: 14px;
     }
     
@@ -241,4 +245,20 @@ body {
     .footer-bottom {
       font-size: 0.9em;
     }
+  }
+
+  /* Basic Heading Hierarchy for Accessibility */
+h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+  }
+  
+  h2 {
+    font-size: 1.75em;
+    margin-bottom: 0.5em;
+  }
+  
+  h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
   }

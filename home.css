@@ -1,242 +1,264 @@
 /* Reset styling */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body Styling */
+body {
+  font-family: 'Lucida Sans', sans-serif;
+  background-color: rgb(160, 160, 151);
+  line-height: 1.5;
+}
+
+/* Grid Layout */
+.gridcontainer {
+  display: grid;
+  grid-template-areas:
+    "header header header header header header"
+    "navbar navbar navbar navbar navbar navbar"
+    "body body body body body body"
+    "footer footer footer footer footer footer";
+  gap: 0;
+}
+
+/* Header Styling */
+.item1 {
+  grid-area: header;
+  background-color: rgb(211, 199, 199);
+  padding: 10px 0;
+  overflow: hidden;
+  position: relative;
+  height: 50px;
+}
+
+.scrolling-header {
+  position: absolute;
+  display: inline-block;
+  white-space: nowrap;
+  color: rgb(77, 70, 175);
+  font-size: 20px;
+  font-weight: bold;
+  animation: movingText 10s linear infinite;
+}
+
+@keyframes movingText {
+  from { left: 100%; }
+  to { left: -100%; }
+}
+
+/* Navbar Styling */
+.item2 {
+  grid-area: navbar;
+}
+
+.item2 ul {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  list-style-type: none;
+  background-color: #1f1f3b;
+  padding: 10px;
+}
+
+.item2 li a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  background-color: #1f1f3b;
+  padding: 10px 20px;  /* Increased padding for larger touch targets */
+  min-width: 88px;     /* A minimum width for easier tapping */
+  min-height: 44px;    /* Ensures a comfortable touch target height */
+  border-radius: 4px;  /* Optional: soften the edges */
+}
+
+.item2 li a.active,
+.item2 li a:active {
+  background-color: gold;
+  color: white;
+}
+
+/* Main News Section */
+.item3N {
+  grid-area: body;
+  background-color: #fff;
+  color: #000;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr; /* Default: one column */
+  gap: 20px;
+}
+
+/* Responsive Layouts for News Section */
+@media (min-width: 768px) {
+  .item3N {
+    grid-template-columns: 1fr 1fr;
   }
-  
-  /* Body Styling */
-  body {
-    font-family: 'Lucida Sans', sans-serif;
-    background-color: rgb(160, 160, 151);
+}
+
+@media (min-width: 1024px) {
+  .item3N {
+    grid-template-columns: 1fr 1fr 1fr;
   }
-  
-  /* Grid Layout */
-  .gridcontainer {
-    display: grid;
-    grid-template-areas:
-      'header header header header header header'
-      'navbar navbar navbar navbar navbar navbar'
-      'body body body body body body'
-      'footer footer footer footer footer footer';
-    gap: 0;
-  }
-  
-  /* Header Styling */
-  .item1 {
-    grid-area: header;
-    font-size: 10px;
-    font-weight: bold;
-    background-color: rgb(211, 199, 199);
-    padding: 10px 0;
-    overflow: hidden;
-    position: relative;
-    height: 50px;
-  }
-  
-  .scrolling-header {
-    position: absolute;
-    display: inline-block;
-    white-space: nowrap;
-    color: rgb(77, 70, 175);
-    font-size: 20px;
-    font-weight: bold;
-    animation: movingText 10s linear infinite;
-  }
-  
-  @keyframes movingText {
-    from { left: 100%; }
-    to { left: -100%; }
-  }
-  
-  /* Navbar Styling */
-  .item2 {
-    grid-area: navbar;
-  }
-  
+}
+
+/* Headings in News Section */
+.item3N h2 {
+  font-size: 1.75em;
+  margin-bottom: 0.75em;
+  text-align: center;
+}
+
+/* News Item Styling */
+.news-item {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-item h3 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.news-item p {
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.news-item a {
+  color: blue;
+  text-decoration: none;
+}
+
+.news-item a:hover {
+  text-decoration: underline;
+}
+
+.news-item img {
+  width: 100%;
+  max-height: 200px; /* Limit image height */
+  object-fit: cover;
+  border-radius: 5px;
+  display: block;
+  margin: 10px auto;
+}
+
+/* Footer Styling */
+.item4 {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  background-color: #1f1f3b;
+  padding: 20px 10px;
+  flex-wrap: wrap;
+  color: white;
+  width: 100%;
+}
+
+.footer-column {
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+  margin: 10px 0;
+}
+
+.footer-column h4 {
+  font-size: 1.25em;
+  color: #fff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column li a {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  padding: 10px;  /* Increased padding for larger touch targets */
+  min-width: 80px;
+  border-radius: 4px;
+}
+
+.footer-column li a:hover {
+  color: gold;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 15px;
+  background-color: #171734;
+  color: white;
+  font-size: 1em;
+  width: 100vw;
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 600px) {
   .item2 ul {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    list-style-type: none;
-    background-color: #1f1f3b;
-    padding: 10px;
+    flex-direction: column;
+    padding: 5px;
   }
   
   .item2 li a {
-    display: block;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    padding: 8px 16px;
+    padding: 12px 16px;
+    font-size: 14px;
   }
   
-  .item2 li a:active {
-    background-color: gold;
-    color: white;
-  }
-  
-  .item2 li a:not(:active) {
-    background-color: #1f1f3b;
-    color: white;
-  }
-  
-  /* News Section */
   .item3N {
-    grid-area: body;
-    background-color: #fff;
-    color: #000;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 1fr; /* Default to single column */
-    gap: 20px;
+    padding: 10px;
+    gap: 10px;
   }
   
-  /* Responsive Two-column Layout */
-  @media (min-width: 768px) {
-    .item3N {
-      grid-template-columns: 1fr 1fr; /* Two columns */
-    }
-  }
-  
-  /* Responsive Three-column Layout */
-  @media (min-width: 1024px) {
-    .item3N {
-      grid-template-columns: 1fr 1fr 1fr; /* Three columns */
-    }
-  }
-  
-  /* News Item Styling */
   .news-item {
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Headline Styling */
-  .news-item h3 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  /* News Links */
-  .news-item a {
-    color: blue;
-    text-decoration: none;
-  }
-  
-  .news-item a:hover {
-    text-decoration: underline;
-  }
-  
-  /* News Image Styling */
-  .news-item img {
-    width: 100%;
-    max-height: 200px; /* Limit image height */
-    object-fit: cover;
-    border-radius: 5px;
-    display: block;
-    margin: 10px auto;
-  }
-  
-  /* Truncate description text to 5 lines */
-  .news-item p {
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 10px;
-  }
-  
-  /* Footer Styling */
-  .item4 {
-    grid-area: footer;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    background-color: #1f1f3b;
-    padding: 20px 10px;
-    flex-wrap: wrap;
-    color: white;
-    width: 100%;
+    padding: 10px;
   }
   
   .footer-column {
-    flex: 1;
-    text-align: center;
-    min-width: 200px;
-    margin: 10px 0;
+    min-width: 100%;
+    margin-bottom: 15px;
   }
   
-  .footer-column h4 {
-    font-size: 16px;
-    color: #ffffff;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    font-weight: bold;
-    border-bottom: 2px solid #fff;
-    display: inline-block;
-    padding-bottom: 5px;
-  }
-  
-  .footer-column ul {
-    list-style: none;
-    padding: 0;
-  }
-  
+  .footer-column h4,
   .footer-column li a {
-    text-decoration: none;
-    color: white;
-  }
-  
-  .footer-column li a:hover {
-    color: gold;
+    font-size: 14px;
   }
   
   .footer-bottom {
-    text-align: center;
-    padding: 15px;
-    background-color: #171734;
-    color: white;
-    font-size: 1em;
-    width: 100vw;
+    font-size: 0.9em;
   }
-  
-  /* Additional Responsive Adjustments for Footer and Navbar */
-  @media (max-width: 600px) {
-    .item2 ul {
-      flex-direction: column;
-      padding: 5px;
-    }
-    
-    .item2 li a {
-      padding: 8px;
-      font-size: 14px;
-    }
-    
-    .item3N {
-      padding: 10px;
-      gap: 10px;
-    }
-    
-    .news-item {
-      padding: 10px;
-    }
-    
-    .footer-column {
-      min-width: 100%; /* Stack footer columns vertically on very small screens */
-      margin-bottom: 15px;
-    }
-    
-    .footer-column h4, .footer-column li a {
-      font-size: 14px;
-    }
-    
-    .footer-bottom {
-      font-size: 0.9em;
-    }
-  }
-  
+}
+
+/* Basic Heading Hierarchy for Accessibility */
+h1 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.75em;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
