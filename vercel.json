@@ -1,17 +1,33 @@
 {
-    "routes": [
-      {
-        "src": "/news",
-        "dest": "/index.html"
-      },
-      {
-        "src": "/trending",
-        "dest": "/index.html"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/index.html"
-      }
-    ]
-  }
-  
+  "routes": [
+    {
+      "src": "/news",
+      "dest": "/news.html"
+    },
+    {
+      "src": "/trending",
+      "dest": "/trending.html"
+    },
+    {
+      "src": "/subscribe",
+      "dest": "/subscribe.html"
+    },
+    {
+      "src": "/privacy",
+      "dest": "/privacy.html"
+    },
+    {
+      "src": "/terms",
+      "dest": "/terms.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/faq",
+      "dest": "/faq.html"
+    }
+    
+  ]
+}
