@@ -262,3 +262,7 @@ h3 {
   font-size: 1.5em;
   margin-bottom: 0.5em;
 }
+.floating-button, .debug-button, .overlay-menu {
+  display: none !important;
+}
+
