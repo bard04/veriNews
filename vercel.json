@@ -1,0 +1,17 @@
+{
+    "routes": [
+      {
+        "src": "/news",
+        "dest": "/index.html"
+      },
+      {
+        "src": "/trending",
+        "dest": "/index.html"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
+      }
+    ]
+  }
+  
