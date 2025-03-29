@@ -10,22 +10,29 @@
     
 </head>
 <body>
-    <div class="gridcontainer">
-        <!-- Header -->
-        <div class="item1">
-            <div class="scrolling-header" id="scrollingText"></div>              
-        </div>
-
-        <!-- Navbar -->
-        <div class="item2">
-            <ul>               
-                <li><a href="news.html">News</a></li>
-                <li><a href="trending.html">Trending</a></li>
-            </ul>
-        </div>
+    <!-- Main Site Header -->
+  <header>
+    <!-- Scrolling text banner -->
+    <div class="item1">
+      <!-- Consider making your site name or logo an <h1> for top-level heading -->
+      <h1 style="position: absolute; left: -9999px;">VeriNews</h1>
+      <!-- The visually hidden <h1> ensures there's a top-level heading for screen readers -->
+      
+      <div class="scrolling-header" id="scrollingText"></div>
+    </div>
+    
+    <!-- Primary navigation bar -->
+    <nav class="item2">
+      <ul>
+        <!-- “News” and “Trending” can be <li><a> links to separate pages -->
+        <li><a href="news.html">News</a></li>
+        <li><a href="trending.html">Trending</a></li>
+      </ul>
+    </nav>
+  </header>
 
         <!-- subsribe Content -->
-        <div class="item3">
+        <main class="item3">
             <div class="subscribe-container">
                 <div class="subscribe-box">
                     <h2>Subscribe to Our Newsletter</h2>
@@ -39,9 +46,10 @@
                     <p id="subscription-message">Thank you for subscribing!</p>
                 </div>
             </div>
-        </div>
+        </main>
 
-            <div class="item4" style="width: 100%;">
+    <footer>    
+        <div class="item4" style="width: 100%;">
                 <div class="footer-column">
                     <h4>About Us</h4>
                     <ul>
@@ -75,9 +83,11 @@
                     <p>Contact us at: <a href="mailto:contact@verinews.com" style="color: gold; text-decoration: none;">contact@verinews.com</a></p>
                 </div>
             </div>
+        </footer>
 
             <!-- JavaScript placed at the end for proper loading -->
             <script src="home.js"></script>
+
             <script>
                 document.getElementById("subscribe-form").addEventListener("submit", function(event) {
                     event.preventDefault();

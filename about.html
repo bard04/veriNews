@@ -67,26 +67,33 @@
 </head>
 <body>
 
-    <div class="gridcontainer">
-        <!-- Header -->
-        <div class="item1">
-            <div class="scrolling-header" id="scrollingText"></div>              
-        </div>
-
-        <!-- Navbar -->
-        <div class="item2">
-            <ul>
-                <li><a href="news.html">News</a></li>
-                <li><a href="trending.html">Trending</a></li>
-            </ul>
-        </div>
+     <!-- Main Site Header -->
+  <header>
+    <!-- Scrolling text banner -->
+    <div class="item1">
+      <!-- Consider making your site name or logo an <h1> for top-level heading -->
+      <h1 style="position: absolute; left: -9999px;">VeriNews</h1>
+      <!-- The visually hidden <h1> ensures there's a top-level heading for screen readers -->
+      
+      <div class="scrolling-header" id="scrollingText"></div>
+    </div>
+    
+    <!-- Primary navigation bar -->
+    <nav class="item2">
+      <ul>
+        <!-- “News” and “Trending” can be <li><a> links to separate pages -->
+        <li><a href="news.html">News</a></li>
+        <li><a href="trending.html">Trending</a></li>
+      </ul>
+    </nav>
+  </header>
 
         <!-- About Us Content -->
-        <div class="item3">
+        <main class="item3">
             <div class="container">
                 <!-- Logo before the content -->
                 
-                <!--<img src="VN.png" alt="VeriNews Logo" class="logo">-->
+            
                 <h1>About VeriNews</h1>
                 <p><span class="highlight">VeriNews</span> is a cutting-edge news platform that brings you the latest, most accurate, and fact-checked news from across the world. Using AI-powered analysis and trusted sources, we deliver real-time updates on politics, business, sports, technology, and more.</p>
                 <br>
@@ -102,10 +109,11 @@
                 <h2>Stay Informed</h2>
                 <p>Subscribe to our newsletter and follow us for daily news updates.</p>
             </div>
-        </div>
+        </main>
     
 
         <!-- Footer -->
+    <footer>
         <div class="item4">
             <div class="footer-column">
                 <h4>About Us</h4>
@@ -137,7 +145,8 @@
                 <p>Contact us at: <a href="mailto:contact@verinews.com" style="color: gold; text-decoration: none;">contact@verinews.com</a></p>
             </div>
         </div>
-    </div>
+      </div>
+    </footer>
 
     <!-- JavaScript placed at the end for proper loading -->
     <script src="home.js"></script>

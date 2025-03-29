@@ -48,23 +48,29 @@
     </style>
 </head>
 <body>
-    <div class="gridcontainer">
-        <!-- Header -->
-        <div class="item1">
-            <div class="scrolling-header" id="scrollingText"></div>
-        </div>
-
-        <!-- Navbar -->
-        <div class="item2">
-            <ul>
-                <li><a href="news.html">News</a></li>
-                <li><a href="trending.html">Trending</a></li>
-                
-            </ul>
-        </div>
+     <!-- Main Site Header -->
+  <header>
+    <!-- Scrolling text banner -->
+    <div class="item1">
+      <!-- Consider making your site name or logo an <h1> for top-level heading -->
+      <h1 style="position: absolute; left: -9999px;">VeriNews</h1>
+      <!-- The visually hidden <h1> ensures there's a top-level heading for screen readers -->
+      
+      <div class="scrolling-header" id="scrollingText"></div>
+    </div>
+    
+    <!-- Primary navigation bar -->
+    <nav class="item2">
+      <ul>
+        <!-- “News” and “Trending” can be <li><a> links to separate pages -->
+        <li><a href="news.html">News</a></li>
+        <li><a href="trending.html">Trending</a></li>
+      </ul>
+    </nav>
+  </header>
 
         <!-- Main FAQ Content -->
-        <div class="item3">
+        <main class="item3">
             <div class="faq-container">
                 <h2>Frequently Asked Questions</h2>
                 <div class="faq-item">
@@ -108,9 +114,10 @@
                     <div class="faq-answer">If you find suspicious content, use our report feature to flag it for review.</div>
                 </div>
             </div>
-        </div>
+        </main>
 
         <!-- Footer Columns -->
+         <footer>
         <div class="item4" style="width: 100vw;">
             <div class="footer-column">
                 <h4>About Us</h4>
@@ -143,6 +150,7 @@
             </div>
         </div>
     </div>
+    </footer>
 
     <!-- JavaScript placed at the end for proper loading -->
     <script src="home.js"></script>
