@@ -12,8 +12,8 @@ const apis = [
     },
     {
         name: "CurrentsAPI",
-        enabled: false,
-        url: "https://api.currentsapi.services/v1/latest-news?apiKey=5CT4KdeK7VM9J53CgjlSnHXvEeJTyvfVUVdnc2TP-xu3ikDj",
+        enabled: true,
+        url: "http://localhost:5000/currents",
         extractData: (data) => data.news?.map(article => ({
             title: article.title,
             image: article.image || "default-news.jpeg",
@@ -65,7 +65,6 @@ const apis = [
             link: article.url || "#"
         })) || []
     }
-    
 ];
 
 const newsContainer = document.querySelector(".item3N");

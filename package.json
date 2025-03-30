@@ -1,0 +1,26 @@
+{
+  "name": "verinews.html",
+  "version": "1.0.0",
+  "description": "VeriNews is a modern, responsive news website designed to deliver accurate and up-to-date news articles along with essential pages such as About, FAQ, Privacy Policy, Terms of Service, and Subscription options. This project uses HTML, CSS, and JavaScript to create a clean and engaging user experience.",
+  "main": "home.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bard04/veriNews.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bard04/veriNews/issues"
+  },
+  "homepage": "https://github.com/bard04/veriNews#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "node-fetch": "^2.7.0"
+  }
+}
