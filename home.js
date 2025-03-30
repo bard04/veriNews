@@ -86,7 +86,7 @@ changeMessage();
 setInterval(changeMessage, 10000);
 
 // Helper function to implement fetch with a timeout
-function fetchWithTimeout(url, options = {}, timeout = 2000) {
+function fetchWithTimeout(url, options = {}, timeout = 1000) {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
             reject(new Error("Request timed out"));
@@ -107,7 +107,7 @@ function fetchWithTimeout(url, options = {}, timeout = 2000) {
 async function fetchNews() {
     const enabledApis = apis.filter(api => api.enabled);
     const fetchPromises = enabledApis.map(api =>
-        fetchWithTimeout(api.url, {}, 2000) // 2 seconds timeout per API
+        fetchWithTimeout(api.url, {}, 1000) // 1 seconds timeout per API
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
                 return response.json().then(data => ({ apiName: api.name, articles: api.extractData(data) }));
