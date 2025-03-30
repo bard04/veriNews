@@ -85,34 +85,48 @@ function changeMessage() {
 changeMessage();
 setInterval(changeMessage, 10000);
 
+// Helper function to implement fetch with a timeout
+function fetchWithTimeout(url, options = {}, timeout = 2000) {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error("Request timed out"));
+        }, timeout);
+
+        fetch(url, options)
+            .then(response => {
+                clearTimeout(timer);
+                resolve(response);
+            })
+            .catch(err => {
+                clearTimeout(timer);
+                reject(err);
+            });
+    });
+}
+
 async function fetchNews() {
-    const enabledApis = apis.filter(api => api.enabled).sort(() => Math.random() - 0.5);
-    let newsFound = false;
+    const enabledApis = apis.filter(api => api.enabled);
+    const fetchPromises = enabledApis.map(api =>
+        fetchWithTimeout(api.url, {}, 2000) // 2 seconds timeout per API
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+                return response.json().then(data => ({ apiName: api.name, articles: api.extractData(data) }));
+            })
+            .catch(error => {
+                console.error(`Error fetching news from ${api.name}:`, error);
+                return null;
+            })
+    );
 
-    for (let api of enabledApis) {
-        try {
-            const response = await fetch(api.url);
-            if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+    const results = await Promise.allSettled(fetchPromises);
+    const allArticles = results
+        .filter(result => result.status === "fulfilled" && result.value && result.value.articles.length > 0)
+        .flatMap(result => result.value.articles);
 
-            const data = await response.json();
-            console.log(`API Response from ${api.name}:`, data);
-
-            const articles = api.extractData(data);
-            if (!articles.length) {
-                console.warn(`No articles found from ${api.name}`);
-                continue;
-            }
-
-            displayNews(articles);
-            console.log(`News successfully fetched from ${api.name}`);
-            newsFound = true;
-            break;
-        } catch (error) {
-            console.error(`Error fetching news from ${api.name}:`, error);
-        }
-    }
-
-    if (!newsFound) {
+    if (allArticles.length > 0) {
+        displayNews(allArticles);
+        console.log("News loaded successfully!");
+    } else {
         newsContainer.innerHTML = "<p>Failed to load news. Please try again later.</p>";
     }
 }
@@ -138,4 +152,4 @@ function displayNews(articles) {
 }
 
 fetchNews();
-setInterval(fetchNews, 300000);
+setInterval(fetchNews, 600000); // Fetch news every 10 minutes (600,000 ms)
