@@ -12,7 +12,7 @@ const apis = [
     },
     {
         name: "CurrentsAPI",
-        enabled: true,
+        enabled: false,
         url: "http://localhost:5000/currents",
         extractData: (data) => data.news?.map(article => ({
             title: article.title,
