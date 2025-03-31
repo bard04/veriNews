@@ -128,7 +128,7 @@ body {
 .news-item p {
   margin-bottom: 10px;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -143,6 +143,7 @@ body {
   text-decoration: underline;
 }
 
+
 .news-item img {
   width: 100%;
   max-height: 200px; /* Limit image height */
@@ -150,6 +151,7 @@ body {
   border-radius: 5px;
   display: block;
   margin: 10px auto;
+  image-rendering: high-quality;
 }
 
 /* Footer Styling */
