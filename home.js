@@ -35,6 +35,7 @@ const apis = [
     {
         name: "NewsDataAPI",
         enabled: true,
+        // Note: We intentionally do not add a timestamp here, as NewsDataAPI doesn't accept extra parameters.
         url: "https://newsdata.io/api/1/news?apikey=pub_767878512ceefd89037d9ece21b6240821f2d&country=us&language=en",
         extractData: (data) => data.results?.map(article => ({
             title: article.title,
@@ -69,30 +70,29 @@ const apis = [
 
 const newsContainer = document.querySelector(".item3N");
 
-// Backup news for first-time users (update periodically as needed)
+// Backup news for first-time users
 const backupNews = [
     {
-        title: "Welcome to VeriNews!",
-        image: "default-news.png",
-        description: "Your trusted source for the latest verified news.",
-        link: "https://www.bbc.com/news"
+        title: "Tech Giants Face New Regulations",
+        image: "backup1.jpg",
+        description: "Governments worldwide are introducing new policies to regulate tech companies.",
+        link: "https://www.bbc.com/news/technology"
     },
     {
-        title: "Stay Informed",
-        image: "default-news.png",
-        description: "We bring you news from reliable sources in real time.",
-        link: "https://www.aljazeera.com/news/"
+        title: "Global Markets Rally Amid Optimism",
+        image: "backup2.jpg",
+        description: "Stock markets saw a significant rise today following positive economic data.",
+        link: "https://www.aljazeera.com/economy"
     },
     {
-        title: "Latest Tech, Business, and Sports Updates",
-        image: "default-news.png",
-        description: "Get insights into the latest trends and developments.",
-        link: "https://edition.cnn.com/"
+        title: "AI Revolutionizing Industries",
+        image: "backup3.jpg",
+        description: "AI is transforming various sectors, from healthcare to finance.",
+        link: "https://edition.cnn.com/tech"
     }
-   
 ];
 
-// Helper: fetch with timeout (3-second timeout per API request)
+// Helper function: fetch with timeout (3-second timeout per API request)
 function fetchWithTimeout(url, options = {}, timeout = 3000) {
     return Promise.race([
         fetch(url, options),
@@ -102,7 +102,7 @@ function fetchWithTimeout(url, options = {}, timeout = 3000) {
     ]);
 }
 
-// Display news articles in the container
+// Function to display news articles in the container
 function displayNews(articles) {
     if (!newsContainer) {
         console.error("News container not found");
@@ -122,7 +122,7 @@ function displayNews(articles) {
     newsContainer.innerHTML = newsHTML || "<p>No news available.</p>";
 }
 
-// Shuffle news articles for random order
+// Function to shuffle news articles (random order)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -130,17 +130,24 @@ function shuffleArray(array) {
     }
 }
 
-// Fetch fresh news from all APIs with individual timeouts
+// Function to fetch fresh news from all APIs with individual timeouts
 async function fetchNews() {
     const enabledApis = apis.filter(api => api.enabled);
     let allArticles = [];
 
     const fetchPromises = enabledApis.map(api => {
-        const urlWithTimestamp = `${api.url}&timestamp=${new Date().getTime()}`;
-        return fetchWithTimeout(urlWithTimestamp, {}, 5000) // 5-second timeout per API
-            .then(response => response.ok ? response.json() : Promise.reject(response.status))
+        // For NewsDataAPI, do not append the timestamp parameter
+        const urlWithTimestamp = (api.name === "NewsDataAPI") 
+            ? api.url 
+            : `${api.url}&timestamp=${new Date().getTime()}`;
+        return fetchWithTimeout(urlWithTimestamp, {}, 3000)
+            .then(response => {
+                if (!response.ok) throw new Error(`API ${api.name} failed with status: ${response.status}`);
+                return response.json();
+            })
             .then(data => {
                 const articles = api.extractData(data);
+                console.log(`Fetched ${articles.length} articles from ${api.name}`);
                 allArticles = allArticles.concat(articles);
             })
             .catch(error => console.warn(`Error fetching news from ${api.name}:`, error));
@@ -153,17 +160,13 @@ async function fetchNews() {
         localStorage.setItem("cachedNews", JSON.stringify(allArticles));
         displayNews(allArticles);
     } else {
-        console.warn("No fresh news available.");
-        // Only update display with backup news if there's no cached news already.
-        if (!localStorage.getItem("cachedNews")) {
-            displayNews(backupNews);
-        }
-        // Otherwise, keep displaying the cached news.
+        console.warn("No fresh news available; displaying backup news.");
+        displayNews(backupNews);
     }
 }
 
-// On page load: display cached news if available; otherwise, show backup news.
-// Then fetch fresh news in the background.
+// On page load: display cached news if available; otherwise, display backup news,
+// then fetch fresh news in the background.
 window.onload = function () {
     const cachedNews = localStorage.getItem("cachedNews");
     if (cachedNews) {
