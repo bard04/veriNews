@@ -24,7 +24,7 @@ const apis = [
     {
         name: "GNewsAPI",
         enabled: true,
-        url: "https://gnews.io/api/v4/top-headlines?country=us&token=25119820a88a607d763a36aa7a9a08c0",
+        url: "https://gnews.io/api/v4/top-headlines?country=ke&token=25119820a88a607d763a36aa7a9a08c0",
         extractData: (data) => data.articles?.map(article => ({
             title: article.title,
             image: article.image || article.urlToImage || "default-news.png",
@@ -35,7 +35,7 @@ const apis = [
     {
         name: "NewsDataAPI",
         enabled: true,
-        // Note: We intentionally do not add a timestamp here, as NewsDataAPI doesn't accept extra parameters.
+        //do not add a timestamp here, as NewsDataAPI doesn't accept extra parameters.
         url: "https://newsdata.io/api/1/news?apikey=pub_767878512ceefd89037d9ece21b6240821f2d&country=us&language=en",
         extractData: (data) => data.results?.map(article => ({
             title: article.title,
@@ -196,4 +196,4 @@ function changeMessage() {
     index = (index + 1) % messages.length;
 }
 changeMessage();
-setInterval(changeMessage, 5000); // Change text every 5 seconds
+setInterval(changeMessage, 10000); // Change text every 10 seconds
