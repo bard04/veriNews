@@ -12,7 +12,7 @@ const apis = [
     },
     {
         name: "CurrentsAPI",
-        enabled: true,
+        enabled: false,
         url: "http://localhost:5000/currents",
         extractData: (data) => data.news?.map(article => ({
             title: article.title,
@@ -74,19 +74,19 @@ const newsContainer = document.querySelector(".item3N");
 const backupNews = [
     {
         title: "Tech Giants Face New Regulations",
-        image: "backup1.jpg",
+        image: "default-news.png",
         description: "Governments worldwide are introducing new policies to regulate tech companies.",
         link: "https://www.bbc.com/news/technology"
     },
     {
         title: "Global Markets Rally Amid Optimism",
-        image: "backup2.jpg",
+        image: "default-news.png",
         description: "Stock markets saw a significant rise today following positive economic data.",
         link: "https://www.aljazeera.com/economy"
     },
     {
         title: "AI Revolutionizing Industries",
-        image: "backup3.jpg",
+        image: "default-news.png",
         description: "AI is transforming various sectors, from healthcare to finance.",
         link: "https://edition.cnn.com/tech"
     }
