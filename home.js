@@ -137,7 +137,7 @@ async function fetchNews() {
 
     const fetchPromises = enabledApis.map(api => {
         const urlWithTimestamp = `${api.url}&timestamp=${new Date().getTime()}`;
-        return fetchWithTimeout(urlWithTimestamp, {}, 3000) // 3-second timeout per API
+        return fetchWithTimeout(urlWithTimestamp, {}, 5000) // 5-second timeout per API
             .then(response => response.ok ? response.json() : Promise.reject(response.status))
             .then(data => {
                 const articles = api.extractData(data);
