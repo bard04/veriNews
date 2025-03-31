@@ -24,7 +24,7 @@ const apis = [
     {
         name: "GNewsAPI",
         enabled: true,
-        url: "https://gnews.io/api/v4/top-headlines?country=ke&token=25119820a88a607d763a36aa7a9a08c0",
+        url: "https://gnews.io/api/v4/top-headlines?country=us&token=25119820a88a607d763a36aa7a9a08c0",
         extractData: (data) => data.articles?.map(article => ({
             title: article.title,
             image: article.image || article.urlToImage || "default-news.png",
@@ -35,7 +35,7 @@ const apis = [
     {
         name: "NewsDataAPI",
         enabled: true,
-        //do not add a timestamp here, as NewsDataAPI doesn't accept extra parameters.
+        // NOT append timestamp for this API.
         url: "https://newsdata.io/api/1/news?apikey=pub_767878512ceefd89037d9ece21b6240821f2d&country=us&language=en",
         extractData: (data) => data.results?.map(article => ({
             title: article.title,
@@ -136,9 +136,9 @@ async function fetchNews() {
     let allArticles = [];
 
     const fetchPromises = enabledApis.map(api => {
-        // For NewsDataAPI, do not append the timestamp parameter
-        const urlWithTimestamp = (api.name === "NewsDataAPI") 
-            ? api.url 
+        // For NewsDataAPI, do not append the timestamp parameter.
+        const urlWithTimestamp = (api.name === "NewsDataAPI")
+            ? api.url
             : `${api.url}&timestamp=${new Date().getTime()}`;
         return fetchWithTimeout(urlWithTimestamp, {}, 3000)
             .then(response => {
@@ -160,13 +160,18 @@ async function fetchNews() {
         localStorage.setItem("cachedNews", JSON.stringify(allArticles));
         displayNews(allArticles);
     } else {
-        console.warn("No fresh news available; displaying backup news.");
-        displayNews(backupNews);
+        console.warn("No fresh news available.");
+        // Only update display with backup news if no cached news exists
+        if (!localStorage.getItem("cachedNews")) {
+            displayNews(backupNews);
+        }
     }
 }
 
-// On page load: display cached news if available; otherwise, display backup news,
-// then fetch fresh news in the background.
+// On page load: 
+// - For returning users, display cached news immediately.
+// - For first-time users, display backup news.
+// Then, fetch fresh news in the background.
 window.onload = function () {
     const cachedNews = localStorage.getItem("cachedNews");
     if (cachedNews) {
