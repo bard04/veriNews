@@ -35,7 +35,7 @@ const apis = [
     {
         name: "NewsDataAPI",
         enabled: true,
-        url: "https://newsdata.io/api/1/news?apikey=pub_767878512ceefd89037d9ece21b6240821f2d&country=ke&language=en",
+        url: "https://newsdata.io/api/1/news?apikey=pub_767878512ceefd89037d9ece21b6240821f2d&country=us&language=en",
         extractData: (data) => data.results?.map(article => ({
             title: article.title,
             image: article.image_url || "default-news.png",
@@ -69,32 +69,7 @@ const apis = [
 
 const newsContainer = document.querySelector(".item3N");
 
-
-async function fetchNews() {
-    const enabledApis = apis.filter(api => api.enabled);
-    let displayedNews = false;
-
-    const fetchPromises = enabledApis.map(api =>
-        fetch(api.url)
-            .then(response => response.ok ? response.json() : Promise.reject(response.status))
-            .then(data => {
-                const articles = api.extractData(data);
-                if (articles.length > 0 && !displayedNews) {
-                    displayedNews = true;
-                    displayNews(articles);
-                }
-            })
-            .catch(error => console.warn(`Error fetching news from ${api.name}:`, error))
-    );
-
-    Promise.allSettled(fetchPromises).then(() => {
-        if (!displayedNews) {
-            newsContainer.innerHTML = "<p>Failed to load news. Please try again later.</p>";
-        }
-    });
-}
-
-// ** Display News Instantly **
+// Function to display news articles in the container
 function displayNews(articles) {
     if (!newsContainer) {
         console.error("News container not found");
@@ -115,14 +90,59 @@ function displayNews(articles) {
     newsContainer.innerHTML = newsHTML || "<p>No news available.</p>";
 }
 
-// ** Load Cached News First, Then Fetch Updates **
+// Function to shuffle news articles
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// Function to fetch news from all APIs
+async function fetchNews() {
+    const enabledApis = apis.filter(api => api.enabled);
+    let allArticles = [];
+
+    const fetchPromises = enabledApis.map(api =>
+        fetch(`${api.url}&timestamp=${new Date().getTime()}`) // Prevent caching
+            .then(response => response.ok ? response.json() : Promise.reject(response.status))
+            .then(data => {
+                const articles = api.extractData(data);
+                allArticles = allArticles.concat(articles);
+            })
+            .catch(error => console.warn(`Error fetching news from ${api.name}:`, error))
+    );
+
+    await Promise.allSettled(fetchPromises);
+
+    if (allArticles.length > 0) {
+        shuffleArray(allArticles);  // Randomize articles
+        // Cache the fresh news in localStorage
+        localStorage.setItem("cachedNews", JSON.stringify(allArticles));
+        // Display fresh news
+        displayNews(allArticles);
+    } else {
+        newsContainer.innerHTML = "<p>Failed to load news. Please try again later.</p>";
+    }
+}
+
+// Load cached news (if any) immediately; otherwise, show a placeholder, then fetch fresh news in the background
 window.onload = function () {
+    const cachedNews = localStorage.getItem("cachedNews");
+    if (cachedNews) {
+        // Display cached news instantly
+        const articles = JSON.parse(cachedNews);
+        displayNews(articles);
+    } else {
+        // Display a loading message for first-time users
+        newsContainer.innerHTML = "<p>Loading news...</p>";
+    }
+    // Always fetch updated news in the background
     fetchNews();
 };
 
-// ** Refresh News Every 10 Minutes Without Blocking Display **
-setInterval(fetchNews, 600000);
-
+// Refresh news every 5 minutes without blocking display
+setInterval(fetchNews, 300000);
 
 // Moving text messages
 const messages = [
