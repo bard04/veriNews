@@ -122,7 +122,7 @@ function displayNews(articles) {
     newsContainer.innerHTML = newsHTML || "<p>No news available.</p>";
 }
 
-// Function to shuffle news articles (random order)
+// Function to shuffle array elements (in-place)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -130,35 +130,36 @@ function shuffleArray(array) {
     }
 }
 
-// Function to fetch fresh news from all APIs with individual timeouts
+// Function to fetch fresh news from enabled APIs in random order,
+// and stop once any API returns articles.
 async function fetchNews() {
     const enabledApis = apis.filter(api => api.enabled);
-    let allArticles = [];
+    shuffleArray(enabledApis); // Randomize API order
+    let foundArticles = [];
 
-    const fetchPromises = enabledApis.map(api => {
-        // For NewsDataAPI, do not append the timestamp parameter.
-        const urlWithTimestamp = (api.name === "NewsDataAPI")
-            ? api.url
-            : `${api.url}&timestamp=${new Date().getTime()}`;
-        return fetchWithTimeout(urlWithTimestamp, {}, 3000)
-            .then(response => {
-                if (!response.ok) throw new Error(`API ${api.name} failed with status: ${response.status}`);
-                return response.json();
-            })
-            .then(data => {
-                const articles = api.extractData(data);
-                console.log(`Fetched ${articles.length} articles from ${api.name}`);
-                allArticles = allArticles.concat(articles);
-            })
-            .catch(error => console.warn(`Error fetching news from ${api.name}:`, error));
-    });
+    for (let api of enabledApis) {
+        try {
+            const urlWithTimestamp = (api.name === "NewsDataAPI")
+                ? api.url
+                : `${api.url}&timestamp=${new Date().getTime()}`;
+            let response = await fetchWithTimeout(urlWithTimestamp, {}, 3000);
+            if (!response.ok) throw new Error(`API ${api.name} failed with status: ${response.status}`);
+            let data = await response.json();
+            const articles = api.extractData(data);
+            console.log(`Fetched ${articles.length} articles from ${api.name}`);
+            if (articles.length > 0) {
+                foundArticles = articles;
+                break; // Stop fetching once we have some articles
+            }
+        } catch (error) {
+            console.warn(`Error fetching news from ${api.name}:`, error);
+        }
+    }
 
-    await Promise.allSettled(fetchPromises);
-
-    if (allArticles.length > 0) {
-        shuffleArray(allArticles);
-        localStorage.setItem("cachedNews", JSON.stringify(allArticles));
-        displayNews(allArticles);
+    if (foundArticles.length > 0) {
+        shuffleArray(foundArticles);
+        localStorage.setItem("cachedNews", JSON.stringify(foundArticles));
+        displayNews(foundArticles);
     } else {
         console.warn("No fresh news available.");
         // Only update display with backup news if no cached news exists
