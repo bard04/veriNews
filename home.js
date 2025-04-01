@@ -113,7 +113,7 @@ function displayNews(articles) {
         newsHTML += `
             <div class="news-item">
                 <h3>${article.title}</h3>
-                <img src="${article.image}" alt="News Image" onerror="this.onerror=null; this.src='default-news.jpeg';">
+                <img src="${article.image}" alt="News Image" onerror="this.onerror=null; this.src='default-news.png';">
                 <p>${article.description}</p>
                 <a href="${article.link}" target="_blank">Read More</a>
             </div>
