@@ -90,13 +90,15 @@ body {
     
 }
 .item3 h2{
-    color: blue;
+    color: rgb(15, 15, 95);
+    font-weight: bold;
+    font-size: 1.2em;
 }
 .item3 ul{
     list-style-type: none;
 }
 .item3 h3{
-    color: blueviolet;
+    color: rgba(13, 3, 22, 0.884);
 }
 
 /* Footer Styling */
