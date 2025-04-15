@@ -35,27 +35,22 @@ body {
   height: 50px; /* Set appropriate height */
 }
 
-/* Scrolling text container */
 .scrolling-header {
   position: absolute;
   display: inline-block;
-  white-space: nowrap; /* Ensure the text doesn't wrap onto the next line */
-  color: rgb(77, 70, 175);
+  white-space: nowrap;
+  color: rgb(70, 86, 175);
   font-size: 20px;
   font-weight: bold;
-  overflow: hidden;
-  width: 100vw; /* Make sure it spans the entire viewport width */
-  padding-left: 100%; /* Start from the far right */
-  animation: movingText 30s linear infinite; /* Smooth continuous scroll */
+  animation: movingText 10s linear infinite;
 }
 
-/* Animation to move text from right to left */
 @keyframes movingText {
   from {
-    transform: translateX(100%); /* Start from the right side */
+      left: 100%;
   }
   to {
-    transform: translateX(-100%); /* End at the left side */
+      left: -100%;
   }
 }
 
