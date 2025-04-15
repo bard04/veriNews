@@ -183,23 +183,20 @@ window.onload = function () {
     fetchNews();
 };
 
-// Refresh news every 10 minutes
-setInterval(fetchNews, 600000);
+// Refresh news every 5 minutes
+setInterval(fetchNews, 300000);
 
-// Moving text messages
 const messages = [
-    "VeriNews - Bringing you the latest & verified news!",
-    "Stay informed with breaking news any time!",
-    "Your trusted source for news & updates!",
-    "Get the latest in business, sports, politics & more!"
+    "VeriNews brings you the latest & verified news. Get the latest in business, sports, politics & more any time."
 ];
 
-let index = 0;
 const scrollingText = document.getElementById("scrollingText");
 
 function changeMessage() {
-    scrollingText.textContent = messages[index];
-    index = (index + 1) % messages.length;
+    scrollingText.textContent = messages[0];  // Use the single, long continuous message
 }
-changeMessage();
-setInterval(changeMessage, 10000); // Change text every 10 seconds
+
+changeMessage(); // Initialize the text immediately
+
+
+

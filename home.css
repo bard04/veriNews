@@ -28,25 +28,38 @@ body {
   grid-area: header;
   background-color: rgb(211, 199, 199);
   padding: 10px 0;
-  overflow: hidden;
-  position: relative;
   height: 50px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 50px; /* Set appropriate height */
 }
 
+/* Scrolling text container */
 .scrolling-header {
   position: absolute;
   display: inline-block;
-  white-space: nowrap;
+  white-space: nowrap; /* Ensure the text doesn't wrap onto the next line */
   color: rgb(77, 70, 175);
   font-size: 20px;
   font-weight: bold;
-  animation: movingText 10s linear infinite;
+  overflow: hidden;
+  width: 100vw; /* Make sure it spans the entire viewport width */
+  padding-left: 100%; /* Start from the far right */
+  animation: movingText 30s linear infinite; /* Smooth continuous scroll */
 }
 
+/* Animation to move text from right to left */
 @keyframes movingText {
-  from { left: 100%; }
-  to { left: -100%; }
+  from {
+    transform: translateX(100%); /* Start from the right side */
+  }
+  to {
+    transform: translateX(-100%); /* End at the left side */
+  }
 }
+
+
 
 /* Navbar Styling */
 .item2 {
