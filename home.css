@@ -21,6 +21,7 @@ body {
     "body body body body body body"
     "footer footer footer footer footer footer";
   gap: 0;
+  min-height: 100vh;
 }
 
 /* Header Styling */
@@ -59,6 +60,10 @@ body {
 /* Navbar Styling */
 .item2 {
   grid-area: navbar;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
 }
 
 .item2 ul {
@@ -67,7 +72,7 @@ body {
   gap: 10px;
   list-style-type: none;
   background-color: #1f1f3b;
-  padding: 10px;
+  padding: 10px; 
 }
 
 .item2 li a {

@@ -108,6 +108,7 @@ function displayNews(articles) {
         console.error("News container not found");
         return;
     }
+
     let newsHTML = "";
     articles.forEach(article => {
         newsHTML += `
@@ -119,8 +120,10 @@ function displayNews(articles) {
             </div>
         `;
     });
+
     newsContainer.innerHTML = newsHTML || "<p>No news available.</p>";
 }
+
 
 // Function to shuffle array elements (in-place)
 function shuffleArray(array) {
@@ -136,6 +139,7 @@ async function fetchNews() {
     const enabledApis = apis.filter(api => api.enabled);
     shuffleArray(enabledApis); // Randomize API order
     let foundArticles = [];
+    let successfulApis = 0;
 
     for (let api of enabledApis) {
         try {
@@ -148,8 +152,9 @@ async function fetchNews() {
             const articles = api.extractData(data);
             console.log(`Fetched ${articles.length} articles from ${api.name}`);
             if (articles.length > 0) {
-                foundArticles = articles;
-                break; // Stop fetching once we have some articles
+                foundArticles.push(...articles);
+                successfulApis++;
+                if (successfulApis >= 2) break; // Stop after two successful fetches
             }
         } catch (error) {
             console.warn(`Error fetching news from ${api.name}:`, error);
@@ -162,12 +167,13 @@ async function fetchNews() {
         displayNews(foundArticles);
     } else {
         console.warn("No fresh news available.");
-        // Only update display with backup news if no cached news exists
         if (!localStorage.getItem("cachedNews")) {
             displayNews(backupNews);
         }
     }
 }
+
+
 
 // On page load: 
 // - For returning users, display cached news immediately.
