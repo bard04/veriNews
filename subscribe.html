@@ -95,27 +95,28 @@
 
             <script>
                 document.getElementById("subscribe-form").addEventListener("submit", function(event) {
-    event.preventDefault();
+                event.preventDefault();
 
-    // Collect form data
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
+                 // Collect form data
+                 const username = document.getElementById("username").value;
+                 const email = document.getElementById("email").value;
 
-    // Prepare template params
-    const templateParams = {
-        name: username,
-        email: email
-    };
+                 // Prepare template params
+                 const templateParams = {
+                  name: username,
+                  email: email
+                 };
 
-    emailjs.send('service_jrbpypr', 'template_nmx46qv', templateParams)
-        .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-            document.getElementById("subscription-message").style.display = "block";
-        }, function(error) {
-            console.log('FAILED...', error);
-            alert("There was an error sending your email. Please try again.");
-        });
-});
+                emailjs.send('service_jrbpypr', 'template_nmx46qv', templateParams)
+                 .then(function(response) {
+                  console.log('SUCCESS!', response.status, response.text);
+                 document.getElementById("subscription-message").style.display = "block";
+                 }, 
+                 function(error) {
+                  console.log('FAILED...', error);
+                  alert("There was an error sending your email. Please try again.");
+                  });
+              });
 
             </script>
     
