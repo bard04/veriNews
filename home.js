@@ -193,7 +193,7 @@ window.onload = function () {
 setInterval(fetchNews, 300000);
 
 const messages = [
-    "VeriNews brings you the latest & verified news. Get the latest in business, sports, politics & more any time."
+    "VeriNews brings you the latest and verified news from across the world. Get the latest in business, sports, politics and more any time."
 ];
 
 const scrollingText = document.getElementById("scrollingText");

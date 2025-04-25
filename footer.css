@@ -39,7 +39,7 @@ body {
   color: rgb(70, 86, 175);
   font-size: 20px;
   font-weight: bold;
-  animation: movingText 10s linear infinite;
+  animation: movingText 18s linear infinite;
 }
 
 @keyframes movingText {
