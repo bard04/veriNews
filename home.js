@@ -11,17 +11,6 @@ const apis = [
         })) || []
     },
     {
-        name: "CurrentsAPI",
-        enabled: false,
-        url: "http://localhost:5000/currents",
-        extractData: (data) => data.news?.map(article => ({
-            title: article.title,
-            image: article.image || "default-news.png",
-            description: article.description || "No description available.",
-            link: article.url || "#"
-        })) || []
-    },
-    {
         name: "GNewsAPI",
         enabled: true,
         url: "https://gnews.io/api/v4/top-headlines?country=us&token=25119820a88a607d763a36aa7a9a08c0",
@@ -35,7 +24,6 @@ const apis = [
     {
         name: "NewsDataAPI",
         enabled: true,
-        // NOT append timestamp for this API.
         url: "https://newsdata.io/api/1/news?apikey=pub_767878512ceefd89037d9ece21b6240821f2d&country=us&language=en",
         extractData: (data) => data.results?.map(article => ({
             title: article.title,

@@ -60,10 +60,6 @@ body {
 /* Navbar Styling */
 .item2 {
   grid-area: navbar;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
 }
 
 .item2 ul {

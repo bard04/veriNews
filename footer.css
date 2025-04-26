@@ -54,10 +54,6 @@ body {
 /* Navbar Styling */
 .item2 {
   grid-area: navbar;
-  position: sticky;
-  top: 50px;
-  z-index: 1000;
-  width: 100%;
 }
 
 .item2 ul {
