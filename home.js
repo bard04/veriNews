@@ -190,7 +190,7 @@ function changeMessage() {
     scrollingText.textContent = messages[0];  // Use the single, long continuous message
 }
 
-changeMessage(); // Initialize the text immediately
+changeMessage();
 
 
 

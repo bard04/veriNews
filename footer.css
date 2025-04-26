@@ -217,7 +217,6 @@ color: white;
   cursor: pointer;
   background: linear-gradient(to right, #007BFF, #0056b3);
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-  transition: background 0.3s ease;
 }
 .subscribe-box button:hover {
   background: linear-gradient(to right, #0056b3, #004494);
