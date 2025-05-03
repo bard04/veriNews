@@ -131,9 +131,7 @@ async function fetchNews() {
 
     for (let api of enabledApis) {
         try {
-            const urlWithTimestamp = (api.name === "NewsDataAPI")
-                ? api.url
-                : `${api.url}&timestamp=${new Date().getTime()}`;
+            const urlWithTimestamp = (api.name === "NewsDataAPI") ? api.url : `${api.url}&timestamp=${new Date().getTime()}`;
             let response = await fetchWithTimeout(urlWithTimestamp, {}, 3000);
             if (!response.ok) throw new Error(`API ${api.name} failed with status: ${response.status}`);
             let data = await response.json();
@@ -150,7 +148,6 @@ async function fetchNews() {
     }
 
     if (foundArticles.length > 0) {
-        shuffleArray(foundArticles);
         localStorage.setItem("cachedNews", JSON.stringify(foundArticles));
         displayNews(foundArticles);
     } else {
@@ -181,8 +178,7 @@ window.onload = function () {
 setInterval(fetchNews, 300000);
 
 const messages = [
-    "VeriNews brings you the latest and verified news from across the world. Get the latest in business, sports, politics and more any time."
-];
+    "VeriNews brings you the latest and verified news from across the world. Get the latest in business, sports, politics and more any time."];
 
 const scrollingText = document.getElementById("scrollingText");
 
