@@ -9,6 +9,56 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4220730286021023"
         crossorigin="anonymous">
   </script>
+  <style>
+     .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    .modal-content input {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .modal-content button {
+      background-color: #2c3e50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background-color: #1a242f;
+    }
+
+    .close-btn {
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <!-- Main Site Header -->
@@ -84,7 +134,59 @@
     </div>
   </footer>
 
+  <!-- Subscribe Modal -->
+  <div id="subscribeModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Subscribe to VeriNews</h2>
+      <form id="subscribeForm">
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email Address" required />
+        <input type="email" id="confirmEmail" placeholder="Confirm Email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
   <!-- JavaScript placed at the end for proper loading -->
   <script src="home.js"></script>
+  <script>
+    function openModal() {
+      document.getElementById("subscribeModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("subscribeModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("subscribeModal");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    document.getElementById("subscribeForm").onsubmit = function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const confirmEmail = document.getElementById("confirmEmail").value.trim();
+
+      if (!name || !email || !confirmEmail) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      if (email !== confirmEmail) {
+        alert("Emails do not match.");
+        return;
+      }
+
+      // Simulate success
+      alert(`Thank you for subscribing, ${name}!`);
+      closeModal();
+      this.reset(); // Clear form
+    }
+  </script>
 </body>
 </html>
