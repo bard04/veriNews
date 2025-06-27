@@ -117,7 +117,8 @@ async function fetchNews() {
         try {
             const urlWithTimestamp = (api.name === "NewsDataAPI") ? api.url : `${api.url}&timestamp=${new Date().getTime()}`;
             let response = await fetchWithTimeout(urlWithTimestamp, {}, 3000);
-            if (!response.ok) throw new Error(`API ${api.name} failed with status: ${response.status}`);
+            if (!response.ok) 
+                throw new Error(`API ${api.name} failed with status: ${response.status}`);
             let data = await response.json();
             const articles = api.extractData(data);
             const filteredArticles = filterArticles(articles); //  Filter before display
