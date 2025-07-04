@@ -10,6 +10,32 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+/* Dark mode styles */
+body.dark-mode {
+  background: #181818;
+  color: #f1f1f1;
+}
+body.dark-mode .item3N,
+body.dark-mode .item4,
+body.dark-mode .modal-content {
+  background: #232323;
+  color: #f1f1f1;
+}
+body.dark-mode .trending-btn {
+  background: #333;
+  color: #ffd700;
+}
+body.dark-mode .trending-btn:hover {
+  background: #444;
+}
+body.dark-mode #scrollToTopBtn {
+  background: #333;
+  color: #ffd700;
+}
+body.dark-mode #scrollToTopBtn:hover {
+  background: #444;
+}
+
 /* Grid Layout */
 .gridcontainer {
   display: grid;
@@ -71,10 +97,10 @@ body {
   color: white;
   text-align: center;
   text-decoration: none;
-  padding: 10px 20px;  /* Increased padding for larger touch targets */
-  min-width: 88px;     /* A minimum width for easier tapping */
-  min-height: 44px;    /* Ensures a comfortable touch target height */
-  border-radius: 4px;  /* Optional: soften the edges */
+  padding: 10px 20px;
+  min-width: 88px;     
+  min-height: 44px;    
+  border-radius: 4px;  
 }
 
 .item2 li a.active,

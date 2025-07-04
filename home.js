@@ -56,9 +56,9 @@ const apis = [
     }
 ];
 
-const newsContainer = document.querySelector(".item3N");
-
+const newsContainer = document.getElementById("news-container");
 const backupNews = [];
+window.allNews = []; // Store all fetched news globally
 
 function fetchWithTimeout(url, options = {}, timeout = 3000) {
     return Promise.race([
@@ -86,18 +86,76 @@ function displayNews(articles) {
     }
 
     let newsHTML = "";
-    articles.forEach(article => {
+    articles.forEach((article, idx) => {
+        const articleKey = encodeURIComponent(article.link || article.title || "article" + idx);
         newsHTML += `
             <div class="news-item">
                 <h3>${article.title}</h3>
-                <img src="${article.image}" alt="News Image">
+                ${article.image ? `<img src="${article.image}" alt="News Image">` : ""}
                 <p>${article.description}</p>
                 <a href="${article.link}" target="_blank">Read More</a>
+                <div class="share-buttons" style="margin:10px 0;">
+                  <a href="https://wa.me/?text=${encodeURIComponent(article.title + ' ' + article.link)}" target="_blank" title="Share on WhatsApp">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg" alt="WhatsApp" style="width:28px;vertical-align:middle;filter:invert(36%) sepia(97%) saturate(749%) hue-rotate(81deg) brightness(93%) contrast(92%);">
+                  </a>
+                  <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(article.link)}" target="_blank" title="Share on Twitter">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/twitter.svg" alt="Twitter" style="width:28px;vertical-align:middle;filter:invert(41%) sepia(99%) saturate(749%) hue-rotate(181deg) brightness(93%) contrast(92%);">
+                  </a>
+                  <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(article.link)}" target="_blank" title="Share on Facebook">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook" style="width:28px;vertical-align:middle;filter:invert(27%) sepia(99%) saturate(749%) hue-rotate(181deg) brightness(93%) contrast(92%);">
+                  </a>
+                </div>
+                <button class="bookmark-btn" data-article="${articleKey}" style="margin:8px 0; background:#ffd700; border:none; border-radius:6px; padding:6px 16px; cursor:pointer;">
+                  &#9734; Save
+                </button>
+                <section class="comments-section" data-article="${articleKey}">
+                  <h4>Comments</h4>
+                  <div class="comments-list" id="comments-list-${articleKey}"></div>
+                  <form class="commentForm" data-article="${articleKey}">
+                    <input type="text" class="commentName" placeholder="Your Name" required style="margin-bottom:8px; width:100%; padding:8px;" />
+                    <textarea class="commentText" placeholder="Your Comment" required style="width:100%; padding:8px;"></textarea>
+                    <button type="submit" style="margin-top:8px;">Post Comment</button>
+                  </form>
+                </section>
             </div>
         `;
     });
 
     newsContainer.innerHTML = newsHTML || "<p>No news with images available.</p>";
+
+    // Attach comment logic for each article
+    articles.forEach((article, idx) => {
+        const articleKey = encodeURIComponent(article.link || article.title || "article" + idx);
+        loadCommentsForArticle(articleKey);
+
+        const form = document.querySelector(`form.commentForm[data-article="${articleKey}"]`);
+        if (form) {
+            form.onsubmit = function (e) {
+                e.preventDefault();
+                const name = form.querySelector('.commentName').value.trim();
+                const text = form.querySelector('.commentText').value.trim();
+                if (!name || !text) return;
+                const comments = JSON.parse(localStorage.getItem("comments-" + articleKey) || "[]");
+                comments.push({ name, text });
+                localStorage.setItem("comments-" + articleKey, JSON.stringify(comments));
+                form.reset();
+                loadCommentsForArticle(articleKey);
+            };
+        }
+    });
+}
+
+// Helper to load comments for a specific article
+function loadCommentsForArticle(articleKey) {
+    const commentsList = document.getElementById("comments-list-" + articleKey);
+    if (!commentsList) return;
+    const comments = JSON.parse(localStorage.getItem("comments-" + articleKey) || "[]");
+    commentsList.innerHTML = comments.map(c =>
+        `<div class="comment" style="margin-bottom:12px;">
+            <strong>${c.name}</strong><br/>
+            <span>${c.text}</span>
+        </div>`
+    ).join("");
 }
 
 function shuffleArray(array) {
@@ -135,6 +193,7 @@ async function fetchNews() {
 
     if (foundArticles.length > 0) {
         localStorage.setItem("cachedNews", JSON.stringify(foundArticles));
+        window.allNews = foundArticles; // Store globally for search
         displayNews(foundArticles);
     } else {
         console.warn("No fresh news available.");
@@ -147,7 +206,9 @@ async function fetchNews() {
 window.onload = function () {
     const cachedNews = localStorage.getItem("cachedNews");
     if (cachedNews) {
-        displayNews(JSON.parse(cachedNews));
+        const parsedNews = JSON.parse(cachedNews);
+        window.allNews = parsedNews; // Store globally for search
+        displayNews(parsedNews);
     } else {
         displayNews(backupNews);
     }
@@ -167,3 +228,145 @@ function changeMessage() {
 }
 
 changeMessage();
+
+// --- SEARCH FUNCTIONALITY ---
+document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+
+    if (!searchForm || !searchInput) return;
+
+    searchForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const query = searchInput.value.trim().toLowerCase();
+        const filtered = (window.allNews || []).filter(article =>
+            (article.title && article.title.toLowerCase().includes(query)) ||
+            (article.description && article.description.toLowerCase().includes(query))
+        );
+        displayNews(filtered);
+    });
+});
+
+// Inject header and footer
+function loadHTML(id, url, callback) {
+  fetch(url)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+      if (callback) callback();
+    });
+}
+
+// Load header, then attach dark mode toggle
+document.addEventListener("DOMContentLoaded", function () {
+  loadHTML('header-placeholder', 'header.html', function () {
+    const toggle = document.getElementById("darkModeToggle");
+    if (toggle) {
+      toggle.onclick = function () {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
+      };
+      // Load preference
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+      }
+    }
+  });
+  // Load footer
+  loadHTML('footer-placeholder', 'footer.html');
+});
+
+// Scroll to Top Button
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  if (scrollToTopBtn) {
+    window.onscroll = function () {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollToTopBtn.style.display = "block";
+      } else {
+        scrollToTopBtn.style.display = "none";
+      }
+    };
+    scrollToTopBtn.onclick = function () {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    };
+  }
+});
+
+// Modal open/close logic (for subscribe modal)
+function openModal() {
+  document.getElementById("subscribeModal").style.display = "block";
+}
+function closeModal() {
+  document.getElementById("subscribeModal").style.display = "none";
+}
+window.onclick = function (event) {
+  const modal = document.getElementById("subscribeModal");
+  if (modal && event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const commentForm = document.getElementById("commentForm");
+  const commentsList = document.getElementById("comments-list");
+  if (commentForm && commentsList) {
+    // Load comments from localStorage
+    function loadComments() {
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      commentsList.innerHTML = comments.map(c =>
+        `<div class="comment" style="margin-bottom:12px;">
+          <strong>${c.name}</strong><br/>
+          <span>${c.text}</span>
+        </div>`
+      ).join("");
+    }
+    loadComments();
+
+    commentForm.onsubmit = function (e) {
+      e.preventDefault();
+      const name = document.getElementById("commentName").value.trim();
+      const text = document.getElementById("commentText").value.trim();
+      if (!name || !text) return;
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.push({ name, text });
+      localStorage.setItem("comments", JSON.stringify(comments));
+      commentForm.reset();
+      loadComments();
+    };
+  }
+});
+
+document.addEventListener("click", function(e) {
+  if (e.target.classList.contains("bookmark-btn")) {
+    const articleKey = e.target.getAttribute("data-article");
+    let bookmarks = JSON.parse(localStorage.getItem("bookmarks") || "[]");
+    if (!bookmarks.includes(articleKey)) {
+      bookmarks.push(articleKey);
+      localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+      e.target.innerHTML = "&#9733; Saved";
+      e.target.disabled = true;
+    }
+  }
+});
+
+function showBreakingNews(message) {
+  const banner = document.getElementById("breaking-news-banner");
+  const text = document.getElementById("breaking-news-text");
+  if (banner && text) {
+    text.innerHTML = message;
+    banner.style.display = "block";
+  }
+}
+
+function fetchBreakingNews() {
+  if (window.allNews && window.allNews.length > 0) {
+    const top = window.allNews[0];
+    const breaking = `<a href="${top.link}" style="color:#fff;text-decoration:underline;" target="_blank">${top.title}</a>`;
+    showBreakingNews("Breaking: " + breaking);
+  }
+}
+
+// --- At the END of your displayNews function, add this line: ---
+fetchBreakingNews();

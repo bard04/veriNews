@@ -95,30 +95,53 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    /* Scroll to Top Button styles */
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      z-index: 1000;
+      display: none;
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 18px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    #scrollToTopBtn:hover {
+      background-color: #1a242f;
+    }
     </style>
 </head>
 <body>
-     <!-- Main Site Header -->
+     <!-- 
   <header>
     
     <div class="item1">
-      <!-- Consider making your site name or logo an <h1> for top-level heading -->
+      
       <h1 style="position: absolute; left: -9999px;">VeriNews</h1>
-      <!-- The visually hidden <h1> ensures there's a top-level heading for screen readers -->
+      
       
       <div class="scrolling-header" id="scrollingText"></div>
     </div>
     
-    <!-- Primary navigation bar -->
+    
     <nav class="item2">
       <ul>
-        <!-- “News” and “Trending” can be <li><a> links to separate pages -->
+        
         <li><a href="/news">News</a></li>
         <li><a href="/trending">Trending</a></li>
       </ul>
     </nav>
-  </header>
+  </header>-->
 
+
+  <div id="header-placeholder"></div>
         <!-- Main FAQ Content -->
         <main class="item3">
             <div class="faq-container">
@@ -166,43 +189,9 @@
             </div>
         </main>
 
-        <!-- Footer Columns -->
-         <footer>
-        <div class="item4" style="width: 100vw;">
-            <div class="footer-column">
-                <h4>About Us</h4>
-                <ul>
-                    <li><a href="/about">About us</a></li>
-                    <li><a href="#" onclick="openModal()">Subscribe</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="/privacy">Privacy Policy</a></li>
-                    <li><a href="/terms">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="/faq">FAQs</a></li>
-                    <li><a href="/faq">Help Center</a></li>
-                </ul>
-            </div>
-        </div>
+        <div id="footer-placeholder"></div>
 
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            &copy; 2025 VeriNews. All Rights Reserved.
-            <div class="contact-email">
-                <p>Contact us at: <a href="mailto:verinews@gmail.com" style="color: gold; text-decoration: none;">evansmageto55@gmail.com</a></p>
-            </div>
-        </div>
-    </div>
-    </footer>
-
-    <!-- Subscribe Modal -->
+    <!-- Subscribe Modal (copy this block exactly) -->
   <div id="subscribeModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -213,48 +202,94 @@
         <input type="email" id="confirmEmail" placeholder="Confirm Email" required />
         <button type="submit">Subscribe</button>
       </form>
+      <p id="subscription-message" style="display:none; color:green; margin-top:10px; font-weight:bold;">
+        Thank you for subscribing! Check your email.
+      </p>
     </div>
   </div>
 
     <!-- JavaScript placed at the end for proper loading -->
     <script src="home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-    function openModal() {
-      document.getElementById("subscribeModal").style.display = "block";
+  // Initialize EmailJS with your real user ID
+  (function () {
+    emailjs.init("1085noHb5DYo0u9Ah");
+  })();
+
+  function openModal() {
+    document.getElementById("subscribeModal").style.display = "block";
+  }
+
+  function closeModal() {
+    document.getElementById("subscribeModal").style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    const modal = document.getElementById("subscribeModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  document.getElementById("subscribeForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const confirmEmail = document.getElementById("confirmEmail").value.trim();
+
+    if (!name || !email || !confirmEmail) {
+      alert("Please fill in all fields.");
+      return;
     }
 
-    function closeModal() {
-      document.getElementById("subscribeModal").style.display = "none";
+    if (email !== confirmEmail) {
+      alert("Emails do not match.");
+      return;
     }
 
-    window.onclick = function(event) {
-      const modal = document.getElementById("subscribeModal");
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
+    const templateParams = {
+      name: name,
+      email: email
+    };
+
+    emailjs.send("service_jrbpypr", "template_nmx46qv", templateParams)
+      .then(function (response) {
+        document.getElementById("subscription-message").style.display = "block";
+        document.getElementById("subscribeForm").reset();
+        closeModal();
+      }, function (error) {
+        alert("Error sending your subscription. Please try again.");
+      });
+  });
+
+  // Inject header and footer
+  function loadHTML(id, url) {
+    fetch(url)
+      .then(res => res.text())
+      .then(html => { document.getElementById(id).innerHTML = html; });
+  }
+  loadHTML('header-placeholder', 'header.html');
+  loadHTML('footer-placeholder', 'footer.html');
+
+  // Scroll to Top functionality
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+  window.onscroll = function () {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      scrollToTopBtn.style.display = "block";
+    } else {
+      scrollToTopBtn.style.display = "none";
     }
+  };
 
-    document.getElementById("subscribeForm").onsubmit = function(e) {
-      e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const confirmEmail = document.getElementById("confirmEmail").value.trim();
+  scrollToTopBtn.onclick = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+</script>
 
-      if (!name || !email || !confirmEmail) {
-        alert("Please fill in all fields.");
-        return;
-      }
-
-       if (email !== confirmEmail) {
-        alert("Emails do not match.");
-        return;
-      }
-
-      // Simulate success
-      alert(`Thank you for subscribing, ${name}!`);
-      closeModal();
-      this.reset(); // Clear form
-    }
-  </script>
+<!-- Scroll to Top Button -->
+<button id="scrollToTopBtn" title="Go to top">&#8679;</button>
 </body>
 </html>
